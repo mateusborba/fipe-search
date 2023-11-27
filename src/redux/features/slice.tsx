@@ -63,7 +63,7 @@ export const mySlice = createSlice({
     marcas: { data: [], isLoading: false },
     modelos:  { data: [], isLoading: false },
     anos:  { data: [], isLoading: false },
-    preco: { data: {}, isLoading: false },
+    preco: { data: null, isLoading: false },
   },
   reducers: {
     resetData(state) {

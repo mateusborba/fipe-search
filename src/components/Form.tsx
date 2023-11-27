@@ -62,17 +62,20 @@ function Form() {
     resetField("ano");
   }, [modelo, marca, dispatch, resetField]);
 
-  async function formSubmit(data: {
+   function formSubmit(data: {
     marca: string;
     modelo: string;
     ano: string;
   }) {
     const { marca, modelo, ano } = data;
 
-    await dispatch(getPreco({ marca, modelo, ano }));
-    reset()
+    dispatch(getPreco({ marca, modelo, ano }));
+
     router.push("/preco")
+
     dispatch(resetData());
+
+    reset()
 
   }
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { precoLoader, precoSelector } from '@/redux/features/slice'
+import { CircularProgress } from '@mui/material'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
 
@@ -12,6 +13,7 @@ function PrecoView() {
 
   return (
     <div className="bg-green-100 w-full flex flex-col gap-3 justify-center items-center h-screen">
+      {loader && <CircularProgress/>}
       {!loader && data &&
         <>
         <h1 className="text-2xl font-bold">Tabela Fipe: Preço {data.Modelo} {data.AnoModelo}</h1>

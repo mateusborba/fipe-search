@@ -30,6 +30,14 @@ const GenericSelect = forwardRef<HTMLSelectElement, propTypes>((
         label={label}
         sx={{ width: "400px" }}
         ref={ref}
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: 200,
+              overflow: 'auto',
+            },
+          },
+        }}
       >
         {loader && <MenuItem disabled value=""><em>Carregando Lista</em></MenuItem>}
         {!loader && options.map((option) => (

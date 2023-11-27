@@ -2,7 +2,7 @@
 
 import { Button } from "@mui/material";
 
-import { useSelector, useDispatch } from "react-redux";
+import { GenericSelect } from "@/components/GenericSelect";
 import {
   anosSelector,
   getAnos,
@@ -11,11 +11,11 @@ import {
   marcasSelector,
   modelosSelector,
 } from "@/redux/features/slice";
-import { Controller, useForm } from "react-hook-form";
 import { AppDispatch } from "@/redux/store";
-import { useEffect } from "react";
-import { GenericSelect } from "@/components/GenericSelect";
 import { useRouter } from 'next/navigation';
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 function Form() {
   const dispatch = useDispatch<AppDispatch>();
@@ -124,9 +124,8 @@ function Form() {
         )}
         <Button
           type="submit"
-          className={`${
-            ano ? "bg-[#3c0080]" : "bg-[#dad8d8]"
-          } px-8 py-2 font-semibold capitalize w-48`}
+          className="px-8 py-2 font-semibold capitalize w-48"
+          style={{backgroundColor: ano ? "#3c0080 ": "#dad8d8" }}
           disabled={!ano}
         >
           <span className={`${ano ? "text-white" : ""}`}>Consultar preço</span>
@@ -137,3 +136,4 @@ function Form() {
 }
 
 export { Form };
+

@@ -8,8 +8,10 @@ import {
   getAnos,
   getModelos,
   getPreco,
+  marcarsLoader,
   marcasSelector,
   modelosSelector,
+  resetData,
 } from "@/redux/features/slice";
 import { AppDispatch } from "@/redux/store";
 import { useRouter } from 'next/navigation';
@@ -22,8 +24,7 @@ function Form() {
 
   const router = useRouter();
 
-
-  const { control, handleSubmit, watch, resetField } = useForm({
+  const { control, handleSubmit, watch, resetField, reset } = useForm({
     defaultValues: { marca: "", modelo: "", ano: "" },
   });
 
@@ -32,6 +33,8 @@ function Form() {
   const modelo = watch("modelo");
 
   const marcasStore = useSelector(marcasSelector);
+  const loaderMarcas = useSelector(marcarsLoader);
+
   const opcoesDeMarca = Array.isArray(marcasStore)
     ? marcasStore
     : [marcasStore];
@@ -67,8 +70,9 @@ function Form() {
     const { marca, modelo, ano } = data;
 
     await dispatch(getPreco({ marca, modelo, ano }));
-
+    reset()
     router.push("/preco")
+    dispatch(resetData());
 
   }
 
@@ -85,6 +89,7 @@ function Form() {
             <GenericSelect
               {...field}
               value={field.value}
+              loader={loaderMarcas}
               id="select-1"
               onChange={(value) => field.onChange(value)}
               label="Marca"
@@ -98,6 +103,7 @@ function Form() {
           render={({ field }) => (
             <GenericSelect
               {...field}
+              loader={false}
               value={field.value}
               id="select-1"
               onChange={(value) => field.onChange(value)}
@@ -113,6 +119,7 @@ function Form() {
             render={({ field }) => (
               <GenericSelect
                 {...field}
+                loader={false}
                 value={field.value}
                 id="select-1"
                 onChange={(value) => field.onChange(value)}

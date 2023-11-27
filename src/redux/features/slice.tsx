@@ -1,5 +1,5 @@
 import { fetchAnos, fetchMarcas, fetchModelos, fetchPreco } from "@/services/features";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface AnoModelo {
   marca: string;
@@ -60,58 +60,117 @@ export const getPreco = createAsyncThunk(
 export const mySlice = createSlice({
   name: "mySlice",
   initialState: {
-    marcas: [],
-    modelos: [],
-    anos: [],
-    preco: {}
+    marcas: { data: [], isLoading: false },
+    modelos:  { data: [], isLoading: false },
+    anos:  { data: [], isLoading: false },
+    preco: { data: {}, isLoading: false },
   },
-  reducers: {},
+  reducers: {
+    resetData(state) {
+        state.marcas = { data: [], isLoading: false };
+        state.modelos = { data: [], isLoading: false };
+        state.anos = { data: [], isLoading: false };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getMarcas.fulfilled, (state, { payload }) => {
-      state.marcas = payload;
+      state.marcas.data = payload;
+      state.marcas.isLoading = false;
+    });
+    builder.addCase(getMarcas.pending, (state) => {
+      state.marcas.isLoading = true;
     });
     builder.addCase(getModelos.fulfilled, (state, { payload }) => {
-      state.modelos = payload.modelos
+      state.modelos.data = payload.modelos
+      state.modelos.isLoading = false;
     })
+    builder.addCase(getModelos.pending, (state) => {
+      state.modelos.isLoading = true;
+    });
     builder.addCase(getAnos.fulfilled, (state, { payload }) => {
-      state.anos = payload
+      state.anos.data = payload
+      state.anos.isLoading = false;
     })
+    builder.addCase(getAnos.pending, (state) => {
+      state.anos.isLoading = true;
+    });
     builder.addCase(getPreco.fulfilled, (state, {payload}) => {
-      state.preco = payload
+      state.preco.data = payload
+      state.preco.isLoading = false;
     })
+    builder.addCase(getPreco.pending, (state) => {
+      state.preco.isLoading = true;
+    });
   },
-});
+  });
+
+
+export const { resetData } = mySlice.actions;
 
 export const marcasSelector = (state: {
-  mySlice: { marcas: { codigo: string; nome: string } };
+  mySlice: { marcas: { data: { codigo: string; nome: string } } };
 }) => {
-  return state.mySlice.marcas;
+  return state.mySlice.marcas.data;
 };
 
+export const marcarsLoader =(state: {
+  mySlice: { marcas: { data: { codigo: string; nome: string }, isLoading: boolean } };
+}) => {
+  return state.mySlice.marcas.isLoading
+}
+
 export const modelosSelector = (state: {
-  mySlice: { modelos: { codigo: string; nome: string } };
+  mySlice: { modelos: { data: { codigo: string; nome: string }, isLoading: boolean } };
 }) => {
-  return state.mySlice.modelos;
+  return state.mySlice.modelos.data;
 };
-export const anosSelector = (state: {
-  mySlice: { anos: { codigo: string; nome: string } };
+
+export const modelosLoader = (state: {
+  mySlice: {modelos: {data: {codigo: string; nome: string}, isLoading: boolean}}
 }) => {
-  return state.mySlice.anos;
+  return state.mySlice.modelos.isLoading
+}
+
+export const anosSelector = (state: {
+  mySlice: { anos:{ data: { codigo: string; nome: string }, isLoading: boolean} }
+}) => {
+  return state.mySlice.anos.data;
+};
+
+export const anosLoader = (state: {
+  mySlice: { anos:{ data: { codigo: string; nome: string }, isLoading: boolean} };
+}) => {
+  return state.mySlice.anos.isLoading;
 };
 
 export const precoSelector = (state: {
   mySlice: {
-    preco: { TipoVeiculo: number
-    Valor: string
-    Marca: string
-    Modelo: string
-    AnoModelo: number
-    Combustivel: string
-    CodigoFipe:string
-    MesReferencia: string
-    SiglaCombustivel: string }};
+    preco: {data: { TipoVeiculo: number
+      Valor: string
+      Marca: string
+      Modelo: string
+      AnoModelo: number
+      Combustivel: string
+      CodigoFipe:string
+      MesReferencia: string
+      SiglaCombustivel: string }, isLoading: boolean}};
 }) => {
-  return state.mySlice.preco;
+  return state.mySlice.preco.data;
 };
+
+export const precoLoader = (state: {
+  mySlice: {
+    preco: {data: { TipoVeiculo: number
+      Valor: string
+      Marca: string
+      Modelo: string
+      AnoModelo: number
+      Combustivel: string
+      CodigoFipe:string
+      MesReferencia: string
+      SiglaCombustivel: string }, isLoading: boolean}};
+}) => {
+  return state.mySlice.preco.isLoading
+  }
 
 export default mySlice.reducer;

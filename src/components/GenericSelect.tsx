@@ -1,5 +1,5 @@
-import React, { forwardRef } from "react";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { forwardRef } from "react";
 
 interface OptionItem {
   codigo: string;
@@ -12,12 +12,14 @@ interface propTypes {
   options: OptionItem[];
   label: string;
   id: string;
+  loader: boolean
 }
 
 const GenericSelect = forwardRef<HTMLSelectElement, propTypes>((
-  { value, onChange, options, label, id },
+  { value, onChange, options, label, id, loader },
   ref
 ) => {
+
   return (
     <FormControl fullWidth>
       <InputLabel htmlFor={id}>{label}</InputLabel>
@@ -29,14 +31,17 @@ const GenericSelect = forwardRef<HTMLSelectElement, propTypes>((
         sx={{ width: "400px" }}
         ref={ref}
       >
-        {options.map((option) => (
+        {loader && <MenuItem disabled value=""><em>Carregando Lista</em></MenuItem>}
+        {!loader && options.map((option) => (
           <MenuItem value={option.codigo} key={option.codigo}>
             {option.nome}
           </MenuItem>
         ))}
+        {!loader && options?.length <= 0 && <MenuItem disabled value=""><em>Nenhum item disponível</em></MenuItem>}
       </Select>
     </FormControl>
   );
 });
 
 export { GenericSelect };
+
